@@ -37,7 +37,6 @@ const Content = () => {
   const savePassword = ()=>{
     setPasswordArray([...passwordArray,{...form,id: uuidv4()}]);
     localStorage.setItem("passwords",JSON.stringify([...passwordArray,{...form,id: uuidv4()}]))
-    console.log([...passwordArray,form]);
     setForm({site:"",username:"",password:""});
     toast('Password Saved!', {
       position: "top-right",
@@ -107,15 +106,15 @@ const Content = () => {
     
       <div className='fixed inset-0 -z-10 bg-[#000000] bg-[radial-gradient(125%_125%_at_50%_100%,#000000_40%,#350136_100%)]'></div>
 
-      <div className="mx-auto max-w-4xl">
+      <div className="md:container mx-auto max-w-4xl">
         
         <h1 className='text-white text-center text-5xl font-bold mt-25 mb-20'>Store your Passwords easily.</h1>
 
         <div className='flex flex-col gap-8 '>
 
-          <input type="text" name='site' value={form.site} onChange={handleChange} placeholder="Enter URL" className='rounded-full bg-white border border-fuchsia-600 text-black py-1 px-4'/>
+          <input type="text" name='site' value={form.site} onChange={handleChange} placeholder="Enter URL" className='rounded-full bg-white border border-fuchsia-600 text-black py-1 px-4 md:mx-0 mx-5'/>
 
-          <div className='flex flex-row justify-between'>
+          <div className='flex flex-col md:flex-row justify-between gap-3 items-center'>
             <input type="text" name='username' value={form.username} onChange={handleChange} placeholder="Enter Username" className='rounded-full bg-white border border-fuchsia-600 text-black py-1 px-4'/>
 
             <div className='relative'>
@@ -136,7 +135,7 @@ const Content = () => {
         </div>
 
         <div className="passwords">
-          <h2 className='font-bold text-4xl py-4 text-white my-10'>Your Passwords</h2>
+          <h2 className='font-bold text-4xl py-4 text-white my-10 md:text-left text-center'>Your Passwords</h2>
           {passwordArray.length===0 && <div className='text-white text-center font-bold text-xl mt-10'>No passwords to show</div>}
           {passwordArray.length!==0 && 
           <table className='table-auto w-full rounded-md overflow-hidden'>

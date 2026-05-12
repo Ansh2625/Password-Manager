@@ -5,7 +5,9 @@ const Navbar = () => {
 
     <nav className=' text-violet-100 flex justify-between p-4 text-xl font-bold items-center'>
 
-        <div>Logo</div>
+        <div className='px-5'>
+          <img src="favicon.png" alt="logo" width={70}/>
+        </div>
 
         <ul className='flex space-x-10'>
             <li className='hover:text-fuchsia-400 cursor-pointer'><a href="/">Home</a></li>

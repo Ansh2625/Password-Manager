@@ -15,7 +15,7 @@ const Content = () => {
   const [passwordArray, setPasswordArray] = useState([])
 
   const getPasswords = async ()=>{
-    let req = await fetch("http://localhost:3000/")
+    let req = await fetch("https://password-manager-exai.onrender.com/")
     let passwords = await req.json();
     setPasswordArray(passwords)
   }
@@ -43,10 +43,10 @@ const Content = () => {
     setPasswordArray([...passwordArray,{...form,id: uuidv4()}]);
     // localStorage.setItem("passwords",JSON.stringify([...passwordArray,{...form,id: uuidv4()}]))
 
-    await fetch("http://localhost:3000/", {method:"DELETE", headers: {"Content-Type": "application/json"}, body: JSON.stringify({id: form.id})})
+    await fetch("https://password-manager-exai.onrender.com/", {method:"DELETE", headers: {"Content-Type": "application/json"}, body: JSON.stringify({id: form.id})})
     setForm({site:"",username:"",password:""});
 
-    let res = await fetch("http://localhost:3000/", {method:"POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({...form,id: uuidv4()})})
+    let res = await fetch("https://password-manager-exai.onrender.com/", {method:"POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({...form,id: uuidv4()})})
     setForm({site:"",username:"",password:""});
     toast('Password Saved!', {
       position: "top-right",
@@ -68,7 +68,7 @@ const Content = () => {
   const deletePassword = async (id)=>{
     setPasswordArray(passwordArray.filter(item=>item.id!==id));
     // localStorage.setItem("passwords",JSON.stringify(passwordArray.filter(item=>item.id!==id)))
-    let res = await fetch("http://localhost:3000/", {method:"DELETE", headers: {"Content-Type": "application/json"}, body: JSON.stringify({id})})
+    let res = await fetch("https://password-manager-exai.onrender.com/", {method:"DELETE", headers: {"Content-Type": "application/json"}, body: JSON.stringify({id})})
     setForm({site:"",username:"",password:""});
     toast('Password Deleted!', {
       position: "top-right",

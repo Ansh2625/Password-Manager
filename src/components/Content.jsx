@@ -85,8 +85,7 @@ const Content = () => {
         theme="dark"
       />
     
-      <div className='absolute inset-0 -z-10 h-full w-full bg-[#000000] bg-[radial-gradient(125%_125%_at_50%_100%,#000000_40%,#350136_100%)] bg-size-[100%_100%]'></div>
-
+      <div className='fixed inset-0 -z-10 bg-[#000000] bg-[radial-gradient(125%_125%_at_50%_100%,#000000_40%,#350136_100%)]'></div>
 
       <div className="mx-auto max-w-4xl">
         

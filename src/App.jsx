@@ -4,10 +4,15 @@ import Footer from "./components/Footer"
 
 function App() {
   return (
-    <div className="min-h-screen font-[Poppins]">
+    <div className="min-h-screen font-[Poppins] flex flex-col">
       
       <Navbar/>
-      <Content/>
+
+      <div className="flex-1">
+        <Content/>
+      </div>
+      
+      
       <Footer/>
 
     </div>

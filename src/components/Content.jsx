@@ -101,7 +101,7 @@ const Content = () => {
   }
 
   return (
-    <>
+    <div className='flex-1'>
 
       <ToastContainer
         position="top-right"
@@ -116,8 +116,6 @@ const Content = () => {
         theme="dark"
       />
     
-      <div className='fixed inset-0 -z-10 bg-[#000000] bg-[radial-gradient(125%_125%_at_50%_100%,#000000_40%,#350136_100%)]'></div>
-
       <div className="md:container mx-auto max-w-4xl">
         
         <h1 className='text-white text-center text-5xl font-bold mt-25 mb-20'>Store your Passwords easily.</h1>
@@ -195,7 +193,7 @@ const Content = () => {
 
       </div>
 
-    </>
+    </div>
   )
 }
 

@@ -124,9 +124,9 @@ const Content = () => {
 
         <div className='flex flex-col gap-8 '>
 
-          <input type="text" name='site' value={form.site} onChange={handleChange} placeholder="Enter URL" className='rounded-full bg-white border border-fuchsia-600 text-black py-1 px-4 md:mx-0 mx-5'/>
+          <input type="text" name='site' value={form.site} onChange={handleChange} placeholder="Enter URL" className='rounded-full bg-white border border-fuchsia-600 text-black py-2 px-4 w-[90%] md:w-full max-w-3xl mx-auto'/>
 
-          <div className='flex flex-col md:flex-row justify-between gap-3 items-center'>
+          <div className='flex flex-col md:flex-row justify-center md:gap-30 items-center gap-5'>
             <input type="text" name='username' value={form.username} onChange={handleChange} placeholder="Enter Username" className='rounded-full bg-white border border-fuchsia-600 text-black py-1 px-4'/>
 
             <div className='relative'>

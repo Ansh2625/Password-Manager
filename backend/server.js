@@ -2,6 +2,8 @@ const express = require('express');
 require('dotenv').config()
 const {MongoClient, Collection} = require('mongodb')
 const bodyparser = require('body-parser')
+const cors = require('cors')
+
 
 const url = 'mongodb://localhost:27017';
 const client = new MongoClient(url);
@@ -11,6 +13,7 @@ const app = express();
 const port = 3000;
 app.use(bodyparser.json())
 
+app.use(cors());
 client.connect();
 
 app.get('/', async (req,res)=>{

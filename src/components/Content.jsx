@@ -1,9 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import { useRef } from 'react';
+import {ToastContainer, toast} from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
+import {v4 as uuidv4} from 'uuid'
+
 
 const Content = () => {
 
   const ref = useRef();
+  const passwordRef = useRef();
 
   
   const [form,setForm] = useState({site:"",username:"",password:""});
@@ -19,24 +24,69 @@ const Content = () => {
 
 
   const showPassword = ()=>{
+    
     if(ref.current.src.includes("eyecross.png"))
+    {
       ref.current.src = "eye.png";
+      passwordRef.current.type = "password";
+    }
     else
+    {
       ref.current.src = "eyecross.png"  
+      passwordRef.current.type = "text";
+    }
   }
 
   const savePassword = ()=>{
-    setPasswordArray([...passwordArray,form]);
-    localStorage.setItem("passwords",JSON.stringify([...passwordArray,form]))
+    setPasswordArray([...passwordArray,{...form,id: uuidv4()}]);
+    localStorage.setItem("passwords",JSON.stringify([...passwordArray,{...form,id: uuidv4()}]))
     console.log([...passwordArray,form]);
+    setForm({site:"",username:"",password:""});
+  }
+
+  const editPassword = (id)=> {
+    setForm(passwordArray.filter(item=>item.id===id)[0]);
+    setPasswordArray(passwordArray.filter(item=>item.id!==id));
+  }
+
+  const deletePassword = (id)=>{
+    setPasswordArray(passwordArray.filter(item=>item.id!==id));
+    localStorage.setItem("passwords",JSON.stringify(passwordArray.filter(item=>item.id!==id)))
   }
 
   const handleChange = (e)=>{
     setForm({...form, [e.target.name] : e.target.value})
   }
 
+  const copyText = (text)=>{
+    toast('Text Copied!', {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: false,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "dark",
+    });
+    navigator.clipboard.writeText(text);
+  }
+
   return (
     <>
+
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick={false}
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+      />
     
       <div className='absolute inset-0 -z-10 h-full w-full bg-[#000000] bg-[radial-gradient(125%_125%_at_50%_100%,#000000_40%,#350136_100%)] bg-size-[100%_100%]'></div>
 
@@ -53,7 +103,7 @@ const Content = () => {
             <input type="text" name='username' value={form.username} onChange={handleChange} placeholder="Enter Username" className='rounded-full bg-white border border-fuchsia-600 text-black py-1 px-4'/>
 
             <div className='relative'>
-              <input type="password" name='password' value={form.password} onChange={handleChange} placeholder="Enter Password" className='rounded-full bg-white border border-fuchsia-600 text-black py-1 px-4'/>
+              <input ref={passwordRef} type="password" name='password' value={form.password} onChange={handleChange} placeholder="Enter Password" className='rounded-full bg-white border border-fuchsia-600 text-black py-1 px-4'/>
               <span className='absolute right-3 top-1.5'>
                 <img ref={ref} src="eye.png" alt="eye" width={20} className='cursor-pointer' onClick={showPassword}/>
               </span>
@@ -63,7 +113,7 @@ const Content = () => {
           <div className='flex justify-center'>
             <button className="bg-fuchsia-600 hover:bg-fuchsia-500 px-4 py-2 rounded-xl text-white font-bold flex justify-center items-center w-fit gap-2" onClick={savePassword}>
               <lord-icon src="https://cdn.lordicon.com/efxgwrkc.json" trigger="hover"></lord-icon>
-              Add Password
+              Save Password
             </button>
           </div>
 
@@ -79,16 +129,36 @@ const Content = () => {
                 <th className='py-2'>Site</th>
                 <th className='py-2'>Username</th>
                 <th className='py-2'>Password</th>
+                <th className='py-2'>Actions</th>
               </tr>
             </thead>
             <tbody className='bg-fuchsia-200'>
               {passwordArray.map((item,index)=>{
                 return <tr key={index}>
                   <td className='text-center w-32 py-2 border border-white'>
-                    <a href={item.site} target='_blank'>{item.site}</a>
+                    <div className='flex items-center justify-center gap-3'>
+                      <a href={item.site} target='_blank'>{item.site}</a>
+                      <img src="copy.png" alt="copy" width={25} className='cursor-pointer' onClick={()=>copyText(item.site)}/>
+                    </div>
                   </td>
-                  <td className='text-center w-32 py-2 border border-white'>{item.username}</td>
-                  <td className='text-center w-32 py-2 border border-white'>{item.password}</td>
+                  <td className='text-center w-32 py-2 border border-white'>
+                    <div className='flex items-center justify-center gap-3'>
+                      {item.username}
+                      <img src="copy.png" alt="copy" width={25} className='cursor-pointer' onClick={()=>copyText(item.username)}/>
+                    </div>
+                  </td>
+                  <td className='text-center w-32 py-2 border border-white'>
+                    <div className='flex items-center justify-center gap-3'>
+                      {item.password}
+                      <img src="copy.png" alt="copy" width={25} className='cursor-pointer' onClick={()=>copyText(item.password)}/>
+                    </div>
+                  </td>
+                  <td className='text-center w-32 py-2 border border-white'>
+                    <div className='flex items-center justify-center gap-5'>
+                      <img src="edit.png" alt="edit" width={20} className='cursor-pointer' onClick={()=>editPassword(item.id)}/>
+                      <img src="delete.png" alt="delete" width={20} className='cursor-pointer' onClick={()=>deletePassword(item.id)}/>
+                    </div>
+                  </td>
                 </tr>
               })}
             </tbody>

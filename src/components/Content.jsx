@@ -9,10 +9,8 @@ const Content = () => {
 
   const ref = useRef();
   const passwordRef = useRef();
-
   
   const [form,setForm] = useState({site:"",username:"",password:""});
-
   
   const [passwordArray, setPasswordArray] = useState([])
 
@@ -21,7 +19,6 @@ const Content = () => {
     if(passwords)
       setPasswordArray(JSON.parse(passwords))
   },[])
-
 
   const showPassword = ()=>{
     
@@ -91,9 +88,9 @@ const Content = () => {
       <div className='absolute inset-0 -z-10 h-full w-full bg-[#000000] bg-[radial-gradient(125%_125%_at_50%_100%,#000000_40%,#350136_100%)] bg-size-[100%_100%]'></div>
 
 
-      <div className="bg-gray-700 mx-auto max-w-4xl">
+      <div className="mx-auto max-w-4xl">
         
-        <h1 className='text-white text-center text-4xl'>Store your Passwords easily.</h1>
+        <h1 className='text-white text-center text-5xl font-bold mt-25 mb-20'>Store your Passwords easily.</h1>
 
         <div className='flex flex-col gap-8 '>
 
@@ -120,8 +117,8 @@ const Content = () => {
         </div>
 
         <div className="passwords">
-          <h2 className='font-bold text-2xl py-4'>Your Passwords</h2>
-          {passwordArray.length===0 && <div>No passwords to show</div>}
+          <h2 className='font-bold text-4xl py-4 text-white my-10'>Your Passwords</h2>
+          {passwordArray.length===0 && <div className='text-white text-center font-bold text-xl mt-10'>No passwords to show</div>}
           {passwordArray.length!==0 && 
           <table className='table-auto w-full rounded-md overflow-hidden'>
             <thead className='bg-fuchsia-600 text-white'>

@@ -1,20 +1,34 @@
 const express = require('express');
 require('dotenv').config()
-const {MongoClient, Collection} = require('mongodb')
+const { MongoClient } = require('mongodb')
 const bodyparser = require('body-parser')
 const cors = require('cors')
 
-
-const url = 'mongodb://localhost:27017';
-const client = new MongoClient(url);
-const dbName = 'Password-Manager';
-
 const app = express();
 const port = 3000;
-app.use(bodyparser.json())
 
+app.use(bodyparser.json())
 app.use(cors());
-client.connect();
+
+const client = new MongoClient(process.env.MONGO_URI);
+
+const dbName = 'Password-Manager';
+
+async function connectDB() {
+    try {
+        await client.connect();
+        console.log("MongoDB Connected");
+
+        app.listen(port, () => {
+            console.log(`Listening at ${port}`);
+        });
+
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+connectDB();
 
 app.get('/', async (req,res)=>{
     const db = client.db(dbName);
@@ -37,8 +51,4 @@ app.delete('/', async (req,res)=>{
     const collection = db.collection('passwords');
     const findResult = await collection.deleteOne(password);
     res.send({success: true, result:findResult})
-})
-
-app.listen(port,()=>{
-    console.log(`Listening at ${port}`);
 })

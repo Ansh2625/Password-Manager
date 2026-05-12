@@ -14,10 +14,15 @@ const Content = () => {
   
   const [passwordArray, setPasswordArray] = useState([])
 
+  const getPasswords = async ()=>{
+    let req = await fetch("http://localhost:3000/")
+    let passwords = await req.json();
+    setPasswordArray(passwords)
+  }
+
   useEffect(()=>{
-    let passwords = localStorage.getItem("passwords");
-    if(passwords)
-      setPasswordArray(JSON.parse(passwords))
+    getPasswords()
+
   },[])
 
   const showPassword = ()=>{
@@ -34,9 +39,14 @@ const Content = () => {
     }
   }
 
-  const savePassword = ()=>{
+  const savePassword = async ()=>{
     setPasswordArray([...passwordArray,{...form,id: uuidv4()}]);
-    localStorage.setItem("passwords",JSON.stringify([...passwordArray,{...form,id: uuidv4()}]))
+    // localStorage.setItem("passwords",JSON.stringify([...passwordArray,{...form,id: uuidv4()}]))
+
+    await fetch("http://localhost:3000/", {method:"DELETE", headers: {"Content-Type": "application/json"}, body: JSON.stringify({id: form.id})})
+    setForm({site:"",username:"",password:""});
+
+    let res = await fetch("http://localhost:3000/", {method:"POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({...form,id: uuidv4()})})
     setForm({site:"",username:"",password:""});
     toast('Password Saved!', {
       position: "top-right",
@@ -51,13 +61,15 @@ const Content = () => {
   }
 
   const editPassword = (id)=> {
-    setForm(passwordArray.filter(item=>item.id===id)[0]);
+    setForm({...passwordArray.filter(item=>item.id===id)[0], id:id});
     setPasswordArray(passwordArray.filter(item=>item.id!==id));
   }
 
-  const deletePassword = (id)=>{
+  const deletePassword = async (id)=>{
     setPasswordArray(passwordArray.filter(item=>item.id!==id));
-    localStorage.setItem("passwords",JSON.stringify(passwordArray.filter(item=>item.id!==id)))
+    // localStorage.setItem("passwords",JSON.stringify(passwordArray.filter(item=>item.id!==id)))
+    let res = await fetch("http://localhost:3000/", {method:"DELETE", headers: {"Content-Type": "application/json"}, body: JSON.stringify({id})})
+    setForm({site:"",username:"",password:""});
     toast('Password Deleted!', {
       position: "top-right",
       autoClose: 5000,
@@ -164,7 +176,7 @@ const Content = () => {
                   </td>
                   <td className='text-center w-32 py-2 border border-white'>
                     <div className='flex items-center justify-center gap-3'>
-                      {item.password}
+                      {"*".repeat(item.password.length)}
                       <img src="copy.png" alt="copy" width={25} className='cursor-pointer' onClick={()=>copyText(item.password)}/>
                     </div>
                   </td>
